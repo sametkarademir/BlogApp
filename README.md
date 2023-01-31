@@ -1,0 +1,1 @@
+# sametkarademir.com
