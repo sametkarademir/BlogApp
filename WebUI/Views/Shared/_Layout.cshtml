@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - UI</title>
+    @await Html.PartialAsync("_LayoutCssPartial")
+    @await RenderSectionAsync("styles", false)
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+        @await Component.InvokeAsync("Navbar")
+
+        @await Component.InvokeAsync("Sidebar")
+
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+    </div>
+    <aside class="control-sidebar control-sidebar-dark">
+
+    </aside>
+    @await Html.PartialAsync("_LayoutJsPartial")
+    @await RenderSectionAsync("Scripts", false)
+    @await Component.InvokeAsync("NToastNotify")
+    
+</body>
+</html>

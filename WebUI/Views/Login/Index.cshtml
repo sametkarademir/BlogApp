@@ -1,0 +1,53 @@
+﻿@model Business.Dtos.LoginDto
+@{
+    ViewData["Title"] = "Giriş";
+    Layout = "_LoginLayout";
+}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a>Hoş Geldin</a>
+    </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Giriş Yap</p>
+
+            <form method="post" asp-controller="Login" asp-action="Index" enctype="multipart/form-data">
+
+                <div class="input-group mb-3">
+                    <input asp-for="Username" class="form-control" name="Username" placeholder="Kullanıcı Adı">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="password" asp-for="Password" name="Password" class="form-control" placeholder="Parola">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                    </div>
+
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Giriş</button>
+                    </div>
+                    <div class="col-4">
+                    </div>
+
+                </div>
+            </form>
+
+
+
+        </div>
+
+    </div>
+</div>
