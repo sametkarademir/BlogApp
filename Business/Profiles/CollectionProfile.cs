@@ -13,10 +13,20 @@ public class CollectionProfile : Profile
         CreateMap<User, UserUpdateDto>();
 
         CreateMap<RoleAddDto, Role>();
+        CreateMap<SystemLogAddDto, SystemLog>();
+        CreateMap<FolderAddDto, Folder>();
 
         CreateMap<WebInfoAddDto, WebInfo>();
         CreateMap<WebInfoUpdateDto, WebInfo>();
         CreateMap<WebInfo, WebInfoUpdateDto>();
-        
+
+        CreateMap<ResumeAddDto, Resume>();
+        CreateMap<ResumeUpdateDto, Resume>();
+        CreateMap<Resume, ResumeUpdateDto>();
+
+        CreateMap<ProjectAddDto, Project>();
+        CreateMap<ProjectUpdateDto, Project>();
+        CreateMap<Project, ProjectUpdateDto>();
+
     }
 }

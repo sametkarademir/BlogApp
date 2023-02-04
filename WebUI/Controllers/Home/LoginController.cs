@@ -7,7 +7,7 @@ using NToastNotify;
 using Shared.Entities.Abstract;
 using WebUI.Helpers.Interface;
 
-namespace WebUI.Controllers.UI
+namespace WebUI.Controllers.Home
 {
     public class LoginController : BaseController
     {

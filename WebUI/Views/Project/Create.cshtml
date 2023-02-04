@@ -1,0 +1,56 @@
+﻿@model Business.Dtos.ProjectAddDto
+@{
+    ViewData["Title"] = "Project Panel";
+    Layout = "_InfoLayout";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="tab-content ">
+                            <form method="post" asp-action="Create" asp-controller="Project" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Name"></label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="Name"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Category"></label>
+                                            <input asp-for="Category" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="Category"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="DemoUrl"></label>
+                                            <input asp-for="DemoUrl" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="DemoUrl"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="File"></label>
+                                            <input asp-for="File" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="File"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Content"></label>
+                                            <textarea id="summernote" asp-for="Content"></textarea>
+                                            <span class="text-danger" asp-validation-for="Content"></span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm"><span class="fas fa-save"></span> Kaydet </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

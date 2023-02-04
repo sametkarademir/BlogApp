@@ -1,6 +1,8 @@
 ﻿using Entities.Concrete;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.Options;
 using Shared.Entities.Abstract;
 using WebUI.Helpers.Interface;
 
@@ -9,10 +11,12 @@ namespace WebUI.Helpers.Concrete
     public class HttpContextHelper : IHttpContextHelper
     {
         private readonly UserManager<User> _userManager;
+        private readonly SessionOptions _options;
 
-        public HttpContextHelper(UserManager<User> userManager)
+        public HttpContextHelper(UserManager<User> userManager, IOptions<SessionOptions> options)
         {
             _userManager = userManager;
+            _options = options.Value;
         }
 
         public async Task<ServiceInputDto> GetHttpContextContexObject(IHttpContextAccessor httpContextAccessor)

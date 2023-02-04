@@ -1,5 +1,10 @@
-﻿using Shared.Utilities.Extenstions.Interface;
+﻿using Business.Dtos;
+using Business.Services.Interface;
+using Entities.Concrete;
+using Shared.Entities.Abstract;
+using Shared.Utilities.Extenstions.Interface;
 using Shared.Utilities.Result;
+using System.IO;
 using WebUI.Helpers.Interface;
 using WebUI.Models;
 
@@ -8,14 +13,18 @@ namespace WebUI.Helpers.Concrete;
 public class ImageHelper : IImageHelper
 {
     private readonly IDateTimeExtensions _dateTimeExtensions;
+    private readonly IFolderService _folderService;
+    private readonly ISystemLogService _systemLogService;
     private readonly string _wwwroot;
     public static readonly string UploadImg = "Storage/Img";
     public static readonly string UploadContent = "Storage/Content";
 
-    public ImageHelper(IWebHostEnvironment env, IDateTimeExtensions dateTimeExtensions)
+    public ImageHelper(IWebHostEnvironment env, IDateTimeExtensions dateTimeExtensions, ISystemLogService systemLogService, IFolderService folderService)
     {
         _wwwroot = env.WebRootPath;
         _dateTimeExtensions = dateTimeExtensions;
+        _systemLogService = systemLogService;
+        _folderService = folderService;
     }
 
     public string StringReplace(string text)
@@ -36,28 +45,86 @@ public class ImageHelper : IImageHelper
         return text;
     }
 
-    //public async Task<string> ShowReadContent(string folderPath)
-    //{
-    //    string content = "";
-    //    await Task.Run(() =>
-    //    {
-    //        folderPath = $"{_wwwroot}/{folderPath}";
-    //        FileStream fileStream = new FileStream(folderPath, FileMode.Open);
-    //        using (StreamReader reader = new StreamReader(fileStream))
-    //        {
-    //            content = reader.ReadToEnd();
-    //        }
-    //    });
-    //    return content;
-    //}
-
-    //public async Task<OperationResult<ImageResultObject>> CreateContentFolder(string content, string folderName, ServiceInputDto serviceInputDto)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    public async Task<OperationResult<ImageResultObject>> UploadImgFolder(IFormFile imageFile, string folderName)
+    public async Task<string> ShowReadContent(string folderPath)
     {
+        string content = "";
+        if (!string.IsNullOrEmpty(folderPath))
+        {
+            await Task.Run(() =>
+            {
+                folderPath = $"{_wwwroot}/{folderPath}";
+                FileStream fileStream = new FileStream(folderPath, FileMode.Open);
+                using StreamReader reader = new StreamReader(fileStream);
+                content = reader.ReadToEnd();
+            });
+        }
+        return content;
+    }
+
+    public async Task<OperationResult<ImageResultObject>> CreateContentFolder(string content, string folderName, string objectId, string objectName, ServiceInputDto serviceInputDto)
+    {
+        var res = new OperationResult<ImageResultObject> { Data = new ImageResultObject(), ExeptionStatus = ExeptionStatus.Error };
+        try
+        {
+            #region FolderOperation
+            if (!Directory.Exists($"{_wwwroot}/{UploadContent}")) { Directory.CreateDirectory($"{_wwwroot}/{UploadContent}"); }
+            string fileExtension = ".txt";
+            string file = $"{folderName}_{_dateTimeExtensions.ToUnixTime(DateTime.UtcNow)}{fileExtension}";
+            string fileName = StringReplace(file);
+            var path = Path.Combine($"{_wwwroot}/{UploadContent}", fileName);
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                writer.WriteLine(content);
+            }
+            #endregion
+            #region CreateFolder
+            var folderResult = await _folderService.CreateAsync(new FolderAddDto
+            {
+                ObjectName = objectName,
+                ObjectId = objectId,
+                Extension = "txt",
+                Name = folderName,
+                OldName = "",
+                Size = "",
+                Url = $"{UploadContent}/{fileName}"
+            }, serviceInputDto);
+            if (folderResult.ExeptionStatus != ExeptionStatus.Success)
+            {
+                await Delete($"{UploadContent}/{fileName}", serviceInputDto); throw new ArgumentException($"{folderResult.Exception?.Message} {folderResult.Exception?.StackTrace}");
+            }
+            #endregion
+            return new OperationResult<ImageResultObject>
+            {
+                Data = new ImageResultObject
+                {
+                    FolderUrl = $"{UploadContent}/{fileName}",
+                    Size = "",
+                    OldName = ""
+                },
+                ExeptionStatus = ExeptionStatus.Success
+            };
+        }
+        catch (Exception e)
+        {
+            await _systemLogService.CreateAsync(new SystemLogAddDto
+            {
+
+                Date = DateTime.UtcNow,
+                LogStatus = LogStatus.Error,
+                Message = $"Message : {e.Message} - Detail : {e.StackTrace}",
+                Method = serviceInputDto.RemoteAction,
+                Action = serviceInputDto.RemoteController,
+                RemoteAddress = serviceInputDto.RemoteAddress,
+                RemotePort = serviceInputDto.RemotePort,
+                Username = serviceInputDto.Username
+            });
+        }
+        return res;
+    }
+
+    public async Task<OperationResult<ImageResultObject>> UploadImgFolder(IFormFile imageFile, string folderName, string objectId, string objectName, ServiceInputDto serviceInputDto)
+    {
+        var res = new OperationResult<ImageResultObject> { Data = new ImageResultObject(), ExeptionStatus = ExeptionStatus.Error };
         try
         {
             #region FolderOperation
@@ -67,6 +134,19 @@ public class ImageHelper : IImageHelper
             string fileName = StringReplace(file);
             var path = Path.Combine($"{_wwwroot}/{UploadImg}", fileName);
             await using (var stream = new FileStream(path, FileMode.Create)) { await imageFile.CopyToAsync(stream); }
+            #endregion
+            #region CreateFolder
+            var folderResult = await _folderService.CreateAsync(new FolderAddDto
+            {
+                ObjectName = objectName,
+                ObjectId = objectId,
+                Extension = Path.GetExtension(imageFile.FileName),
+                Name = folderName,
+                OldName = imageFile.FileName,
+                Size = imageFile.Length.ToString(),
+                Url = $"{UploadImg}/{fileName}"
+            }, serviceInputDto);
+            if (folderResult.ExeptionStatus != ExeptionStatus.Success) { await Delete($"{UploadImg}/{fileName}", serviceInputDto); throw new ArgumentException($"{folderResult.Exception?.Message} {folderResult.Exception?.StackTrace}"); }
             #endregion
             return new OperationResult<ImageResultObject>
             {
@@ -79,34 +159,53 @@ public class ImageHelper : IImageHelper
                 ExeptionStatus = ExeptionStatus.Success
             };
         }
-        catch {
-
-            return new OperationResult<ImageResultObject>
+        catch (Exception e)
+        {
+            await _systemLogService.CreateAsync(new SystemLogAddDto
             {
-                Data = new ImageResultObject
-                {
-                    FolderUrl = $"{UploadImg}/default.png", Size = "0", OldName = null
-                },
-                ExeptionStatus = ExeptionStatus.Error
-            };
+
+                Date = DateTime.UtcNow,
+                LogStatus = LogStatus.Error,
+                Message = $"Message : {e.Message} - Detail : {e.StackTrace}",
+                Method = serviceInputDto.RemoteAction,
+                Action = serviceInputDto.RemoteController,
+                RemoteAddress = serviceInputDto.RemoteAddress,
+                RemotePort = serviceInputDto.RemotePort,
+                Username = serviceInputDto.Username
+            });
         }
+        return res;
     }
-    
-    public async Task<OperationResult<bool>> Delete(string folderUrl)
+
+    public async Task<OperationResult<bool>> Delete(string folderUrl, ServiceInputDto serviceInputDto)
     {
+        var res = new OperationResult<bool> { Data = false, ExeptionStatus = ExeptionStatus.Error };
         bool isSuccess = false;
         try
         {
             await Task.Run(() =>
             {
                 var fileToDelete = Path.Combine($"{_wwwroot}/", folderUrl);
-                if (File.Exists(fileToDelete))
-                {
-                    File.Delete(fileToDelete);
-                }
+                if (File.Exists(fileToDelete)) { File.Delete(fileToDelete); }
             });
-            return new OperationResult<bool> { Data = true, ExeptionStatus = ExeptionStatus.Success };
+            res.Data = true;
+            res.ExeptionStatus = ExeptionStatus.Success;
+            await _folderService.DeleteByUrlAsync(folderUrl, serviceInputDto);
         }
-        catch { return new OperationResult<bool> { Data = isSuccess, ExeptionStatus = ExeptionStatus.Error }; }
+        catch (Exception e)
+        {
+            await _systemLogService.CreateAsync(new SystemLogAddDto
+            {
+                Date = DateTime.UtcNow,
+                LogStatus = LogStatus.Error,
+                Message = $"Message : {e.Message} - Detail : {e.StackTrace}",
+                Method = serviceInputDto.RemoteAction,
+                Action = serviceInputDto.RemoteController,
+                RemoteAddress = serviceInputDto.RemoteAddress,
+                RemotePort = serviceInputDto.RemotePort,
+                Username = serviceInputDto.Username
+            });
+        }
+        return res;
     }
 }

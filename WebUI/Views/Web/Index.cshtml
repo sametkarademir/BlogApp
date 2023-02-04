@@ -1,4 +1,106 @@
-﻿@{
+﻿@model Business.Dtos.RequestCountListDto
+@{
     ViewData["Title"] = "Web Site";
     Layout = "_InfoLayout";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container-fluid lead">
+                    <div id="line_chart" style="width: 800px; height: 600px"></div>
+                </div>
+            </div>
+
+            @foreach (var item in Model.RequestCountDtos)
+            {
+                @if (item.Key == "Home")
+                {
+                    item.Count = (item.Count / 3);
+                }
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">@item.Key</span>
+                            <span class="info-box-number">
+                                @item.Count
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-12 col-sm-6 col-md-3 mt-2">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Likes</span>
+                        <span class="info-box-number">41,410</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3 mt-2">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Sales</span>
+                        <span class="info-box-number">760</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3 mt-2">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Members</span>
+                        <span class="info-box-number">2,000</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Time', 'Data'],
+        @foreach (var data in Model.RequestCountDtos)
+        {
+            @if (data.Key == "Home"){data.Count = data.Count / 3;}
+            <text>['@data.Key', @data.Count], </text>
+        }
+        ]);
+            var options = {
+                title: 'Sayfa Görüntülenme',
+                curveType: 'function',
+                pointsVisible: true,
+                lineWidth: 3,
+                legend: 'none',
+                hAxis: { title: 'Sayfalar' },
+                vAxis: { title: 'Görüntülenme' },
+                width: '100%',
+                height: '100%',
+                chartArea: { width: '85%', height: '75%' }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+            chart.draw(data, options);
+        }
+    </script>
+
 }

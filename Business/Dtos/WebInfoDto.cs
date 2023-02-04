@@ -1,18 +1,8 @@
-﻿using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-
-public class WebInfoDto
-{
-}
-
-public class WebInfoListDto
-{
-    public IList<WebInfo> WebInfos { get; set; } = null!;
-}
 
 public class WebInfoAddDto
 {

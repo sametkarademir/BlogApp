@@ -22,6 +22,154 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Entities.Concrete.Folder", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("Extension")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<long>("ModifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ObjectId")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ObjectName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("OldName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Size")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Folders");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Project", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContentUrl")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("DemoUrl")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<long>("ModifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Resume", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Company")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("Date")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<long>("ModifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Resumes");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -58,7 +206,7 @@ namespace Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "c960d223-d434-45d1-8b00-5801a21ad4bd",
+                            ConcurrencyStamp = "550a2307-a9a7-4225-b9a6-3df759ae52aa",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -86,6 +234,47 @@ namespace Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Concrete.SystemLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Action")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("Date")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LogStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("RemoteAddress")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("RemotePort")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemLogs");
                 });
 
             modelBuilder.Entity("Entities.Concrete.User", b =>
@@ -186,7 +375,7 @@ namespace Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "36807cb4-ab1e-4a5d-afe5-2c37bc9438fa",
+                            ConcurrencyStamp = "e2cb99f7-8532-4801-a8b3-60291288a58e",
                             CreatedAt = 0L,
                             Email = "admin@mail.com",
                             EmailConfirmed = true,

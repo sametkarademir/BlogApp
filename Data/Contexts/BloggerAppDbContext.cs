@@ -8,6 +8,10 @@ namespace Data.Contexts;
 public class BloggerAppDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
 {
     public DbSet<WebInfo>? WebInfos { get; set; }
+    public DbSet<SystemLog>? SystemLogs { get; set; }
+    public DbSet<Folder>? Folders { get; set; }
+    public DbSet<Resume>? Resumes { get; set; }
+    public DbSet<Project>? Projects { get; set; }
 
     public BloggerAppDbContext(DbContextOptions<BloggerAppDbContext> options) : base(options)
     {
@@ -24,6 +28,10 @@ public class BloggerAppDbContext : IdentityDbContext<User, Role, int, UserClaim,
         modelBuilder.ApplyConfiguration(new UserTokenMap());
 
         modelBuilder.ApplyConfiguration(new WebInfoMap());
+        modelBuilder.ApplyConfiguration(new SystemLogMap());
+        modelBuilder.ApplyConfiguration(new FolderMap());
+        modelBuilder.ApplyConfiguration(new ResumeMap());
+        modelBuilder.ApplyConfiguration(new ProjectMap());
 
     }
 }
