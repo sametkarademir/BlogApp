@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Blog\Models\" />
     <Folder Include="Middleware\" />
     <Folder Include="wwwroot\Storage\Content\" />
   </ItemGroup>

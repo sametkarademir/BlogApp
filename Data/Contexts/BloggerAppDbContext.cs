@@ -1,5 +1,6 @@
 ﻿using Data.Mappings;
 using Entities.Concrete;
+using Entities.Concrete.Blog;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ public class BloggerAppDbContext : IdentityDbContext<User, Role, int, UserClaim,
     public DbSet<Folder>? Folders { get; set; }
     public DbSet<Resume>? Resumes { get; set; }
     public DbSet<Project>? Projects { get; set; }
+    public DbSet<Category>? Categories { get; set; }
+    public DbSet<Article>? Articles { get; set; }
 
     public BloggerAppDbContext(DbContextOptions<BloggerAppDbContext> options) : base(options)
     {
@@ -32,6 +35,8 @@ public class BloggerAppDbContext : IdentityDbContext<User, Role, int, UserClaim,
         modelBuilder.ApplyConfiguration(new FolderMap());
         modelBuilder.ApplyConfiguration(new ResumeMap());
         modelBuilder.ApplyConfiguration(new ProjectMap());
+        modelBuilder.ApplyConfiguration(new CategoryMap());
+        modelBuilder.ApplyConfiguration(new ArticleMap());
 
     }
 }

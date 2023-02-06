@@ -1,0 +1,74 @@
+﻿@model Business.Dtos.ArticleAddDto
+@{
+    ViewData["Title"] = "Article Panel";
+    Layout = "_BlogLayout";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="tab-content ">
+                            <form method="post" asp-action="Create" asp-controller="Article" enctype="multipart/form-data">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Title"></label>
+                                            <input asp-for="Title" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="Title"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="SeoAuthor"></label>
+                                            <input asp-for="SeoAuthor" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="SeoAuthor"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="CategoryId"></label>
+                                            <select class="form-control select2 select2-danger" id="category-select" asp-for="CategoryId" data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                @foreach (var item in Model.Categories)
+                                                {
+                                                    <option value="@item.Id">@item.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="SeoDescription"></label>
+                                            <textarea asp-for="SeoDescription" class="form-control"></textarea>
+                                            <span class="text-danger" asp-validation-for="SeoDescription"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="SeoTag"></label>
+                                            <input asp-for="SeoTag" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="SeoTag"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="File"></label>
+                                            <input asp-for="File" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="File"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Content"></label>
+                                            <textarea id="summernote" asp-for="Content"></textarea>
+                                            <span class="text-danger" asp-validation-for="Content"></span>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-sm"><span class="fas fa-save"></span> Kaydet </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

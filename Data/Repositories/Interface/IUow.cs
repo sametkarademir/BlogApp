@@ -7,6 +7,8 @@ public interface IUow : IAsyncDisposable
     IFolderRepository FolderRepository { get; }
     IResumeRepository ResumeRepository { get; }
     IProjectRepository ProjectRepository { get; }
+    ICategoryRepository CategoryRepository { get; }
+    IArticleRepository ArticleRepository { get; }
 
 
     Task<int> SaveAsync();

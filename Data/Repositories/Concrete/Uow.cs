@@ -11,6 +11,8 @@ public class Uow : IUow
     private readonly FolderRepository _folderRepository = null!;
     private readonly ResumeRepository _resumeRepository = null!;
     private readonly ProjectRepository _projectRepository = null!;
+    private readonly CategoryRepository _categoryRepository = null!;
+    private readonly ArticleRepository _articleRepository = null!;
     
     public Uow(BloggerAppDbContext context)
     {
@@ -22,6 +24,8 @@ public class Uow : IUow
     public IFolderRepository FolderRepository => _folderRepository ?? new FolderRepository(_context);
     public IResumeRepository ResumeRepository => _resumeRepository ?? new ResumeRepository(_context);
     public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
+    public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_context);
+    public IArticleRepository ArticleRepository => _articleRepository ?? new ArticleRepository(_context);
 
     public async Task<int> SaveAsync()
     {

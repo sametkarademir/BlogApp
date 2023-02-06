@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700|Playfair+Display:400,700,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/Blog/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/Blog/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Blog/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Blog/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/Blog/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Blog/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/Blog/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="~/Blog/fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="~/Blog/css/aos.css">
+
+    <link rel="stylesheet" href="~/Blog/css/style.css">
+</head>
+<body>
+
+    <div class="site-wrap">
+
+        <div class="site-mobile-menu">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+        <header class="site-navbar" role="banner">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+
+                    <div class="col-12 search-form-wrap js-search-form">
+                        <form method="get" action="#">
+                            <input type="text" id="s" class="form-control" placeholder="Search...">
+                            <button class="search-btn" type="submit"><span class="icon-search"></span></button>
+                        </form>
+                    </div>
+
+                    <div class="col-4 site-logo">
+                        <a asp-action="Index" asp-controller="Home" asp-area="Blog" class="text-black h2 mb-0">Blog</a>
+                    </div>
+
+                    @await Component.InvokeAsync("Category")
+                </div>
+
+            </div>
+        </header>
+
+        @RenderBody()
+    </div>
+
+    <script src="~/Blog/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Blog/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/Blog/js/jquery-ui.js"></script>
+    <script src="~/Blog/js/popper.min.js"></script>
+    <script src="~/Blog/js/bootstrap.min.js"></script>
+    <script src="~/Blog/js/owl.carousel.min.js"></script>
+    <script src="~/Blog/js/jquery.stellar.min.js"></script>
+    <script src="~/Blog/js/jquery.countdown.min.js"></script>
+    <script src="~/Blog/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Blog/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Blog/js/aos.js"></script>
+
+    <script src="~/Blog/js/main.js"></script>
+
+
+</body>
+</html>

@@ -49,6 +49,8 @@ builder.Services.AddTransient<ISystemLogService, SystemLogManager>();
 builder.Services.AddTransient<IFolderService, FolderManager>();
 builder.Services.AddTransient<IResumeService, ResumeManager>();
 builder.Services.AddTransient<IProjectService, ProjectManager>();
+builder.Services.AddTransient<ICategoryService, CategoryManager>();
+builder.Services.AddTransient<IArticleService, ArticleManager>();
 
 
 
@@ -119,8 +121,13 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapAreaControllerRoute(
+        name: "Blog",
+        areaName: "Blog",
+        pattern: "Blog/{controller=Home}/{action=Index}/{id?}"
+    );
     endpoints.MapControllerRoute(
-        name: "Home",
+        name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}"
     );
     endpoints.MapDefaultControllerRoute();

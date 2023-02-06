@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Dtos;
 using Entities.Concrete;
+using Entities.Concrete.Blog;
 
 namespace Business.Profiles;
 
@@ -27,6 +28,14 @@ public class CollectionProfile : Profile
         CreateMap<ProjectAddDto, Project>();
         CreateMap<ProjectUpdateDto, Project>();
         CreateMap<Project, ProjectUpdateDto>();
+
+        CreateMap<CategoryAddDto, Category>();
+        CreateMap<CategoryUpdateDto, Category>();
+        CreateMap<Category, CategoryUpdateDto>();
+
+        CreateMap<ArticleAddDto, Article>();
+        CreateMap<ArticleUpdateDto, Article>();
+        CreateMap<Article, ArticleUpdateDto>();
 
     }
 }

@@ -1,0 +1,38 @@
+﻿@model Business.Dtos.CategoryUpdateDto
+@{
+    ViewData["Title"] = "Category Panel";
+    Layout = "_BlogLayout";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="tab-content ">
+                            <form method="post" asp-action="Update" asp-controller="Category" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Name"></label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="Name"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Color"></label>
+                                            <input asp-for="Color" class="form-control" />
+                                            <span class="text-danger" asp-validation-for="Color"></span>
+                                        </div>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm"><span class="fas fa-save"></span> Kaydet </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

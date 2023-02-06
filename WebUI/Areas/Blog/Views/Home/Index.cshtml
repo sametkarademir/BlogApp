@@ -1,0 +1,50 @@
+﻿@model Business.Dtos.ArticleListDto
+@{
+    Layout = "_Layout";
+}
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Articles)
+            {
+                <div class="col-lg-4 mb-4">
+                    <div class="entry2">
+                        <a><img src="~/@item.ImageUrl" alt="Image" class="img-fluid rounded"></a>
+                        <div class="excerpt">
+                            <span class="post-category text-white mb-3" style="background-color: @item.Category.Color">@item.Category?.Name</span>
+
+                            <h2><a asp-area="Blog" asp-controller="Home" asp-action="Detail" asp-route-Id="@item.Id">@item.Title</a></h2>
+
+                            <p>@item.SeoDescription</p>
+                            <p><a asp-area="Blog" asp-controller="Home" asp-action="Detail" asp-route-Id="@item.Id">Devam Et</a></p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <ul class="pagination justify-content-center mb-4">
+            @{
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active": "")">
+                        @if (Model.CategoryId != null)
+                        {
+                            <a asp-route-currentPage="@i" asp-route-categoryId="@Model.CategoryId">@i</a>
+
+                        }
+                        else
+                        {
+                            <a asp-route-currentPage="@i">@i</a>
+                        }
+
+                    </li>
+
+                }
+            }
+        </ul>
+
+    </div>
+</div>
