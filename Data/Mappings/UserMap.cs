@@ -74,7 +74,7 @@ public class UserMap : IEntityTypeConfiguration<User>
             SecurityStamp = "R4NTFFYXD5G2VQ2PYOCGVOZUNAXD2E4V",
             NormalizedEmail = "ADMIN@MAIL.COM",
             NormalizedUserName = "ADMIN",
-            PasswordHash = "AQAAAAEAACcQAAAAEOpw9tRiZfEUgn/qmUnqBg1nFAvBrzWtIphs/uGCgkeA5OyFqxR9gzliKGBU8RdCiA=="
+            PasswordHash = ""
         });
     }
 }
